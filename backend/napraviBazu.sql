@@ -15,15 +15,16 @@ CREATE OR REPLACE TABLE Osoba(
 
 
 CREATE OR REPLACE TABLE Brak(
+    idOsobe1 int NOT NULL,
+    idOsobe2 int NOT NULL,
+    
 	brakSklopljen date,
 	brakPoRedu int,
 	mestoVencanja varchar(30),
 	koJeVencao varchar(30),
 	svedoci varchar(100),
-    idOsobe1 int NOT NULL,
-    idOsobe2 int NOT NULL,
 
-    constraint fk_brak_osoba1 foreign key (idOsobe1) references Osoba(id),
     constraint fk_brak_osoba2 foreign key (idOsobe2) references Osoba(id),
+    constraint fk_brak_osoba1 foreign key (idOsobe1) references Osoba(id),
     primary key(idOsobe1, idOsobe2, brakPoRedu)
 );

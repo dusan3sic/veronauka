@@ -8,7 +8,7 @@ def mariadbConnect():
             password="admin1234",
             host="127.0.0.1",
             port=3306,
-            database="test"
+            database="knjigaVencanih"
         )
     except mariadb.Error as e:
         print(f"Error connecting to MariaDB Platform: {e}")
@@ -26,7 +26,9 @@ def kveri(cursor, query):
     conn.close()
 
 
+
 conn = mariadbConnect()
 cursor = conn.cursor()
-ans = kveri(cursor, "SELECT * from books;")
+# ans = kveri(cursor, "CALL izbrisiSve()")
+ans = kveri(cursor, "CALL ubaciOsobu('Dusan', 'Trisic');")
 for row in ans: print(row)
