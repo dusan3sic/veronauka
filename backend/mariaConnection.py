@@ -29,6 +29,3 @@ def kveri(cursor, query):
 
 conn = mariadbConnect()
 cursor = conn.cursor()
-# ans = kveri(cursor, "CALL izbrisiSve()")
-ans = kveri(cursor, "CALL ubaciOsobu('Dusan', 'Trisic');")
-for row in ans: print(row)
