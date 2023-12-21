@@ -2,7 +2,7 @@ CREATE OR REPLACE DATABASE knjigaVencanih;
 use knjigaVencanih;
 
 CREATE OR REPLACE TABLE Osoba(
-	id int AUTO_INCREMENT,
+	id int NOT NULL,
     ime varchar(30),
     prezime varchar(30),
     zanimanje varchar(30),
