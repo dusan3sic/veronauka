@@ -48,6 +48,7 @@ def insert_osoba():
 def insert_brak():
     try:
         data = request.get_json()
+        print(data)
         connection = get_db()
         with connection.cursor() as cursor:
             cursor.execute("INSERT INTO Brak (idOsobe1, idOsobe2, brakSklopljen, brakPoRedu, mestoVencanja, koJeVencao, svedoci) VALUES (%s, %s, %s, %s, %s, %s, %s)",
