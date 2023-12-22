@@ -9,6 +9,8 @@ class Er extends Error {
     }
 }
 
+toggleSection("prikaz");
+
 async function predaj(){
     var form = document.getElementsByTagName('form')[0];
 
@@ -58,7 +60,8 @@ async function predaj(){
         if(ans['code'] == 200) uspesnaForma(form);
         else throw new Er(ans["error"], ans['code']);
 
-    } catch (error) {
+    } 
+    catch (error) {
         if(error.code == 503) alert("Veza sa serverom nije uspostavljena!");
         else if(error.code == 409) alert("Pokusavata da unesete brak koji vec postoji!");
         
@@ -79,7 +82,8 @@ async function postOsoba(url, data) {
 
         const result = await response.json();
         return result['id'];
-    } catch (error) {
+    } 
+    catch (error) {
         console.error('Error:', error);
         return null;
     }
@@ -97,7 +101,8 @@ async function postBrak(url, data) {
 
         const result = await response.json();
         return (result);
-    } catch (error) {
+    } 
+    catch (error) {
         console.error('Error:', error);
     }
 };
@@ -124,10 +129,20 @@ function highlightEmptyFields(form) {
             emptyCnt += 1
 
             if (!firstEmptyField) firstEmptyField = field;
-        } else field.style.border = '';
+        } 
+        else field.style.border = '';
     }
 
     if (firstEmptyField)  firstEmptyField.focus();
 
     return (emptyCnt == 0);
+}
+
+function toggleSection(sectionId) {
+    var opcijaElements = document.querySelectorAll('.opcija');
+
+    opcijaElements.forEach(function(element) {
+        if (element.id === sectionId) element.style.display = 'block';
+        else element.style.display = 'none'; 
+    });
 }

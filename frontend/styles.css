@@ -1,3 +1,66 @@
+.navbar {
+    display: flex;
+    width: 100%;
+    background-color: #fff;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-item {
+    flex-grow: 1;
+    text-align: center;
+    padding: 15px;
+    font-size: 24px; /* Adjust the font size as needed */
+    /* font-family: 'Arial', sans-serif; Change the font family */
+    font-family: 'Roboto', sans-serif;
+
+    color: #333; /* Change the font color */
+    position: relative;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.orange-bg {
+    background-color: #ffA500; /* Orange color */
+    color: #fff; /* White font color for contrast */
+}
+
+.blue-bg {
+    background-color: #007bff; /* Blue color */
+    color: #fff; /* White font color for contrast */
+}
+
+.nav-item a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.nav-item:hover {
+    background-color: #333; /* Dark background on hover */
+    color: #fff; /* White font color on hover */
+}
+
+.nav-item::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 3px;
+    width: 0;
+    background-color: #fff;
+    transition: width 0.3s;
+}
+
+.nav-item:hover::before {
+    width: 100%;
+}
+
+
+/* sds */
+
+
 body {
     font-family: Arial, sans-serif;
     background-color: #f5f5f5;
@@ -8,6 +71,7 @@ body {
 .container {
     max-width: 40%;
     margin: 2% auto;
+    margin-top: 5%;
     padding: 1.5%;
     background-color: #fff;
     border-radius: 5px;

@@ -1,10 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./styles.css">
+    <script src="./app.js" defer></script>
 </head>
 <body>
-    <div class="container">
+    <div class="navbar">
+        <div class="nav-item orange-bg" onclick="toggleSection('upitnik')">
+            <a href="#">Dodavanje Braka</a>
+        </div>
+        <div class="nav-item blue-bg" onclick="toggleSection('prikaz')">
+            <a href="#">Prikazivanje Baze</a>
+        </div>
+    </div>
+
+    <div class="container opcija" id="upitnik">
         <h2>Upitnik</h2>
         <form>
             <div class="form-group">
@@ -91,6 +104,10 @@
                 <button type="button" onClick="predaj()">Predaj</button>
             </div>
         </form>
+    </div>
+
+    <div class="opcija" id="prikaz">
+        <h1 font>dassd</h1>
     </div>
     <script src="./app.js"></script>
     
