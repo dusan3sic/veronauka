@@ -24,13 +24,14 @@ async function predaj(){
         imePrezimeRoditelji: form[13].value
     };
 
+    
     try {
         const idMuza = await postOsoba(insertOsobaUrl, muzData);
         const idZene = await postOsoba(insertOsobaUrl, zenaData);
 
         const brakData = {
-            idOsobe1: idMuza['id'],
-            idOsobe2: idZene['id'],
+            idOsobe1: idMuza,
+            idOsobe2: idZene,
             brakSklopljen: form[14].value,
             brakPoRedu: form[15].value,
             mestoVencanja: form[16].value,
@@ -39,7 +40,8 @@ async function predaj(){
         };
         
         ans = await postBrak(insertBrakUrl, brakData);
-        console.log(ans);
+        if(ans['success']) uspesnaForma();
+        else neuspesnaForma();
 
     } catch (error) {
         console.error('Error:', error);
@@ -82,3 +84,11 @@ async function postBrak(url, data) {
         console.error('Error:', error);
     }
 };
+
+
+function uspesnaForma(){
+    alert("uspesna forma");
+}
+function neuspesnaForma(){
+    alert("neuspesna forma");
+}

@@ -29,18 +29,26 @@ def insert_osoba():
         data = request.get_json()
         connection = get_db()
         with connection.cursor() as cursor:
-            cursor.execute("CALL ubaciOsobu(%s, %s, %s, %s, %s, %s, %s)",
+            # Note: Added OUT parameter for the inserted ID
+            cursor.execute("CALL ubaciOsobu(%s, %s, %s, %s, %s, %s, %s, @inserted_id)",
                            (data['ime'], data['prezime'], data['zanimanje'], data['mestoRodjenja'], data['godinaRodjenja'], data['drzavljanstvo'], data['imePrezimeRoditelji']))
+            
+            # Execute a query to retrieve the value of @inserted_id
+            cursor.execute("SELECT @inserted_id AS id")
             result = cursor.fetchone()
-            # inserted_id = result['inserted_id']
+            inserted_id = result['id']
         
         connection.commit()
         connection.close()
-        print(2)
-        return jsonify({'id': result})
+
+        # Use app.logger.info() for logging
+        app.logger.info(f'Inserted ID: {inserted_id}')
+
+        return jsonify({'id': inserted_id})
     except Exception as e:
-        print(1)
-        return jsonify({'id': None, 'error': e})
+        # Use app.logger.error() for logging
+        app.logger.error(f'Error: {str(e)}')
+        return jsonify({'id': None, 'error': str(e)})
 
 
 # Insert data into Brak table
@@ -48,16 +56,17 @@ def insert_osoba():
 def insert_brak():
     try:
         data = request.get_json()
-        print(data)
         connection = get_db()
         with connection.cursor() as cursor:
-            cursor.execute("INSERT INTO Brak (idOsobe1, idOsobe2, brakSklopljen, brakPoRedu, mestoVencanja, koJeVencao, svedoci) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+            cursor.execute("CALL sklopiBrak(%s, %s, %s, %s, %s, %s, %s)",
                            (data['idOsobe1'], data['idOsobe2'], data['brakSklopljen'], data['brakPoRedu'], data['mestoVencanja'], data['koJeVencao'], data['svedoci']))
+        
         connection.commit()
         connection.close()
-        return jsonify({'message': 'Brak inserted successfully'})
+        return jsonify({'success': True, 'message': 'Brak inserted successfully'})
     except Exception as e:
-        return jsonify({'error': str(e)})
+        app.logger.info(e)
+        return jsonify({'success': False, 'error': str(e)})
 
 
 if __name__ == '__main__':
