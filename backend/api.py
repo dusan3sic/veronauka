@@ -63,10 +63,13 @@ def insert_brak():
         
         connection.commit()
         connection.close()
-        return jsonify({'success': True, 'message': 'Brak inserted successfully'})
+        return jsonify({'code': 200, 'message': 'Brak inserted successfully'})
     except Exception as e:
         app.logger.info(e)
-        return jsonify({'success': False, 'error': str(e)})
+
+        code = 409
+
+        return jsonify({'code': code, 'error': str(e)})
 
 
 if __name__ == '__main__':

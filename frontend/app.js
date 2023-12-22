@@ -1,8 +1,19 @@
 const insertOsobaUrl = 'http://127.0.0.1:5000/insert_osoba';
 const insertBrakUrl = 'http://127.0.0.1:5000/insert_brak';
 
+class Er extends Error {
+    constructor(message, statusCode) {
+        super(message);
+        this.name = "moj error";
+        this.code = statusCode;
+    }
+}
+
 async function predaj(){
     var form = document.getElementsByTagName('form')[0];
+
+    let puna = highlightEmptyFields(form);
+    if(!puna) return;
     
     const muzData = {
         ime: form[0].value,
@@ -29,6 +40,8 @@ async function predaj(){
         const idMuza = await postOsoba(insertOsobaUrl, muzData);
         const idZene = await postOsoba(insertOsobaUrl, zenaData);
 
+        if(idMuza == null || idZene == null) throw new Er("idMuza ili idZene ne postoji", 503);
+
         const brakData = {
             idOsobe1: idMuza,
             idOsobe2: idZene,
@@ -39,13 +52,17 @@ async function predaj(){
             svedoci: form[18].value
         };
         
-        ans = await postBrak(insertBrakUrl, brakData);
-        if(ans['success']) uspesnaForma();
-        else neuspesnaForma();
+        let ans = await postBrak(insertBrakUrl, brakData);
+        if(ans == null) throw new Er("Brak nije uspostavljen", 503);
+
+        if(ans['code'] == 200) uspesnaForma(form);
+        else throw new Er(ans["error"], ans['code']);
 
     } catch (error) {
-        console.error('Error:', error);
-        return
+        if(error.code == 503) alert("Veza sa serverom nije uspostavljena!");
+        else if(error.code == 409) alert("Pokusavata da unesete brak koji vec postoji!");
+        
+        console.log(error.message);
     }
 }
 
@@ -86,9 +103,31 @@ async function postBrak(url, data) {
 };
 
 
-function uspesnaForma(){
-    alert("uspesna forma");
+function uspesnaForma(form){
+    console.log("uspesna forma");
+
+    form.reset();
 }
-function neuspesnaForma(){
-    alert("neuspesna forma");
+
+function highlightEmptyFields(form) {
+    let firstEmptyField = null;
+
+
+    let emptyCnt = 0;
+    for (let i = 0; i < form.length; i++) {
+        const field = form[i];
+
+        if (field.tagName !== 'INPUT')  continue;
+
+        if (!field.value.trim()) {
+            field.style.border = '2px solid red';
+            emptyCnt += 1
+
+            if (!firstEmptyField) firstEmptyField = field;
+        } else field.style.border = '';
+    }
+
+    if (firstEmptyField)  firstEmptyField.focus();
+
+    return (emptyCnt == 0);
 }
